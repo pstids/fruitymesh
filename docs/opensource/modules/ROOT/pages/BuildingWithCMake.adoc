@@ -62,7 +62,7 @@ CMake Projects are often structured into libraries and executables. This is (mos
 * *ALL_TARGETS* - Every target
 * *NATIVE_TARGETS* - Only targets that are the product of a single feature set. Most of them run on actual hardware, though there are exceptions to this like prod_mesh_arm which is intended only to check that the HAL abstracts all vendor specific code out.
 * *SDK_14_TARGETS* - Targets for the nrf52832.
-* *SDK_15_TARGETS* - Targets for the nrf52840.
+* *SDK_17_TARGETS* - Targets for the nrf52840.
 * *ASSET_TARGETS* - All assets, both classical, development, and INS.
 * *BP_TARGETS* - Belparts targets.
 * *CLC_TARGETS* - Regent targets.

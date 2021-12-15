@@ -31,7 +31,7 @@ You should then create the file `<fruitymesh>/.vscode/launch.json` with the cont
             "executable": "./_build/vscode/github_dev_nrf52.out", //Path to the built FruityMesh firmware
             "armToolchainPath": "C:/<your_path>/gcc-arm-embedded-4.9-2015q3/bin/", //Path to the bin folder of your GCC ARM Embedded installation
             "serverpath": "C:/<your_path>/SEGGER/JLink_V622g/JLinkGDBServerCL.exe", //Path to the SEGGER Debug Server (Installed with the nrf tools)
-            //"svdFile": "C:/<your_path>/fruitymesh/sdk/sdk15/modules/nrfx/mdk/nrf52840.svd" // Path to the Device Description file for viewing Peripheral Registers (Optional)
+            //"svdFile": "C:/<your_path>/fruitymesh/sdk/sdk17/modules/nrfx/mdk/nrf52840.svd" // Path to the Device Description file for viewing Peripheral Registers (Optional)
         }
     ]
 }

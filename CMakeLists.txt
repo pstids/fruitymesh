@@ -146,7 +146,7 @@ if(BUILD_FEATURESETS)
       target_compile_options(${FEATURE_SET} PRIVATE $<$<COMPILE_LANGUAGE:ASM>:-D__STACK_SIZE=4096>)
       target_compile_options(${FEATURE_SET} PRIVATE "-mcpu=cortex-m4")
       target_link_options(${FEATURE_SET} PRIVATE "-mcpu=cortex-m4")
-      list(APPEND SDK_15_TARGETS ${FEATURE_SET})
+      list(APPEND SDK_17_TARGETS ${FEATURE_SET})
 
     elseif (${PLATFORM} STREQUAL "ARM")
       target_compile_options(${FEATURE_SET} PRIVATE $<$<COMPILE_LANGUAGE:ASM>:-D__HEAP_SIZE=4096>)
