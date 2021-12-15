@@ -50,6 +50,7 @@
 #endif
 
 #include <nrfx_uarte.h>
+#include <nrfx_uart.h>
 #include "prs/nrfx_prs.h"
 #include <hal/nrf_gpio.h>
 
@@ -152,6 +153,11 @@ static void interrupts_enable(nrfx_uarte_t const * p_instance,
                                             NRF_UARTE_INT_ERROR_MASK |
                                             NRF_UARTE_INT_RXTO_MASK  |
                                             NRF_UARTE_INT_TXSTOPPED_MASK);
+#if UARTE_RXDRDY_ENABLE_PATCH == 1
+    nrf_uart_event_clear((NRF_UART_Type *)p_instance->p_reg, NRF_UART_EVENT_RXDRDY);
+    nrf_uart_int_enable((NRF_UART_Type *)p_instance->p_reg, NRF_UART_INT_MASK_RXDRDY);
+#endif
+
     NRFX_IRQ_PRIORITY_SET(nrfx_get_irq_number((void *)p_instance->p_reg),
                           interrupt_priority);
     NRFX_IRQ_ENABLE(nrfx_get_irq_number((void *)p_instance->p_reg));
@@ -560,6 +566,17 @@ static void tx_done_event(uarte_control_block_t * p_cb,
     p_cb->handler(&event, p_cb->p_context);
 }
 
+#if UARTE_RXDRDY_ENABLE_PATCH == 1
+static void rx_ready_event(uarte_control_block_t * p_cb, uint8_t bytes, uint8_t * p_data)
+{
+    nrfx_uarte_event_t event;
+    event.type             = NRF_DRV_UART_EVT_RXDRDY;
+    event.data.rxtx.bytes  = 0;
+    event.data.rxtx.p_data = NULL;
+    p_cb->handler(&event, p_cb->p_context);
+}
+#endif
+
 void nrfx_uarte_tx_abort(nrfx_uarte_t const * p_instance)
 {
     uarte_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
@@ -669,6 +686,14 @@ static void uarte_irq_handler(NRF_UARTE_Type *        p_uarte,
             tx_done_event(p_cb, nrf_uarte_tx_amount_get(p_uarte));
         }
     }
+    #if UARTE_RXDRDY_ENABLE_PATCH == 1
+    if (nrf_uart_int_enable_check((NRF_UART_Type *)p_uarte, NRF_UART_INT_MASK_RXDRDY) &&
+             nrf_uart_event_check((NRF_UART_Type *)p_uarte, NRF_UART_EVENT_RXDRDY))
+    {
+        nrf_uart_event_clear((NRF_UART_Type *)p_uarte, NRF_UART_EVENT_RXDRDY);
+        rx_ready_event(p_cb, nrf_uarte_rx_amount_get(p_uarte), p_cb->p_rx_buffer);
+    }
+#endif
 }
 
 #if NRFX_CHECK(NRFX_UARTE0_ENABLED)

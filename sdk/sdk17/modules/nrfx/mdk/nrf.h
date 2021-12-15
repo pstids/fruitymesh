@@ -99,11 +99,12 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 /* Redefine "old" too-generic name NRF52 to NRF52832_XXAA to keep backwards compatibility. */
-#if defined (NRF52)
+/* Commented out to keep compatibility of our own makefile */
+/*#if defined (NRF52)
     #ifndef NRF52832_XXAA
         #define NRF52832_XXAA
     #endif
-#endif
+#endif*/
 
 /* Define NRF52_SERIES for common use in nRF52 series devices. Only if not previously defined. */
 #if defined (NRF52805_XXAA) || defined (NRF52810_XXAA) || defined (NRF52811_XXAA) || defined (NRF52820_XXAA) || defined (NRF52832_XXAA) || defined (NRF52832_XXAB) || defined (NRF52833_XXAA) || defined (NRF52840_XXAA)
